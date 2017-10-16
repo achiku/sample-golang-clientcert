@@ -10,7 +10,7 @@ import (
 
 var (
 	certFile = flag.String("cert", "client-crt.pem", "client certificate")
-	keyFile  = flag.String("key", "client-privetekey.pem", "client private key")
+	keyFile  = flag.String("key", "client-private.pem", "client private key")
 	caFile   = flag.String("ca", "ca-cert.pem", "pem eoncoded CA certificate")
 	port     = flag.String("port", "5001", "server port")
 	host     = flag.String("host", "127.0.0.1", "server host")
