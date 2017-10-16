@@ -1,32 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"crypto/tls"
 	"flag"
-	"fmt"
 	"log"
-	"net"
 )
-
-func handleConnection(conn net.Conn) {
-	defer conn.Close()
-
-	r := bufio.NewReader(conn)
-	for {
-		msg, err := r.ReadString('\n')
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		fmt.Printf("%s\n", msg)
-
-		if _, err := conn.Write([]byte("world\n")); err != nil {
-			log.Print(err)
-			return
-		}
-	}
-}
 
 var (
 	serverCrt = flag.String("cert", "server.crt", "server certificate")
@@ -48,7 +26,7 @@ func main() {
 	s := NewTCPServer(addr)
 
 	s.OnNewClient(func(c *Client) {
-		c.Send("hello")
+		c.Send("hello from TCP server")
 	})
 	s.OnNewMessage(func(c *Client, msg string) {
 		log.Printf("new message: %s", msg)
@@ -57,7 +35,7 @@ func main() {
 		log.Print("client connection closed")
 	})
 
-	log.Printf("server start at 127.0.0.1:%s", *port)
+	log.Printf("server start at %s", addr)
 	if err := s.Listen(cfg); err != nil {
 		log.Fatal(err)
 	}
